@@ -27,7 +27,7 @@
    - Да, главное поддерживать консистентность типов, а объединение и наследование работает в обе стороны
 
 ```typescript
-// 4
+// 5
 interface Type {
   propA: string | undefined;
   propB?: string;
@@ -35,7 +35,7 @@ interface Type {
 
 const ReactComponent = (props: Type) => null;
 
-// 5
+// 7
 type A = {
   a: string;
   c: boolean;
@@ -51,7 +51,6 @@ type Z = {
   c: string;
 };
 
-// 7
 type C = A & B; // a - require, b - require, c - require
 type D = A | B; // c - requre, b | a - require
 type X = A & Z; // X - never because of types can't select correct type of field - c
