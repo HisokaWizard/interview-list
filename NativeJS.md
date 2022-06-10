@@ -129,6 +129,13 @@ console.log(0 === null); // false
 console.log(0 === undefined); // false
 
 // JS has operator ** which equal pow(value, 2);
+
+const res = 'B' + 'a' + (1 - 'hello');
+console.log(res); // BaNaN
+const res = (true && 3) + 'd';
+console.log(res); // 3d
+const res = Boolean(true && 3) + 'd';
+console.log(res); // trued
 ```
 
 ### Ссылки и значения
@@ -218,6 +225,23 @@ const f = 2000;
 console.log(summa(5, 6)); // ReferenceError: summa is not defined
 const summa = (a, b) => a + b;
 console.log(summa(7, 4)); // 11
+```
+
+3. Сохранение лексического окружения переменной(замыкание на верхнем уровне)
+
+```javascript
+var a = 1;
+
+const foo = () => {
+  console.log(a);
+};
+
+const bar = () => {
+  var a = 2;
+  foo();
+};
+
+bar(); // 1
 ```
 
 ### Closure - замыкания
@@ -419,29 +443,7 @@ furniture.location();
 furniture.price(34, 67, 31);
 furniture.location2.bind(furniture)(); //  в стрелочных функциях нет контекста, его туда даже нельзя передать с помощью bind
 
-const teenagerLivingRoom = {
-  item1: 'computer',
-  item2: 'TV',
-  item3: 'dance station',
-};
-
-const getFurniture = furniture.location.bind(teenagerLivingRoom);
-getFurniture();
-furniture.location.call(teenagerLivingRoom);
-furniture.location.apply(teenagerLivingRoom);
-
-function Monster(name, power) {
-  this.name = name;
-  this.power = power;
-  this.attack = function (attackType) {
-    console.log(`The ${this.name} has ${power} power and attack type: ${attackType}`);
-  };
-  // Пример неявной передачи контекста
-  console.log(this);
-}
-
-const ghul = new Monster('ghul', 100);
-ghul.attack('bite and blunge');
+//////////////////////////////////////////
 
 function logger() {
   console.log(`I output only external context: ${this.item}`);
@@ -452,6 +454,8 @@ const obj = { item: 'some value' };
 logger.bind(obj)(); // Пример явной передачи контекста
 logger.apply(obj);
 logger.call(obj);
+
+/////////////////////////////////////////
 
 function Shark(type) {
   this.type = type;
@@ -472,6 +476,19 @@ const test = { type: '1' };
 const hammer = new Shark('hummer');
 hammer.ff.bind(test)(); // контекст не крепится к стрелочной функции, this всегда будет от объекта в котором определена стрелочная функция
 hammer.contextFF.bind(test)(); // новый контекст объета test
+
+/////////////////////////////////
+
+var aa = {
+  b: 5,
+  getB: function () {
+    return this.b;
+  },
+};
+
+console.log('b: ', aa.getB()); // 5
+var fn = aa.getB;
+console.log('b:', fn()); // undefined
 ```
 
 ### Async
@@ -490,6 +507,42 @@ hammer.contextFF.bind(test)(); // новый контекст объета test
    - any() возвращает первый успешно исполненный promise
 5. Можно ли использовать await вне функции, объявленной с async?
    - Да, можно. Есть такое понятие как `Top level await`
+
+```javascript
+Promise.reject('a')
+  .catch((p) => p + 'b')
+  .catch((p) => p + 'с')
+  .then((p) => p + 'd')
+  .then((p) => p + 'f')
+  .catch((p) => p + 'h')
+  .finally((p) => p + 'e')
+  .then((p) => console.log(p)); //abdf
+
+/////////////////////////////////////////
+
+setTimeout(() => console.log('a'));
+
+Promise.resolve()
+  .then((first) => {
+    console.log('first:', first);
+    return 'b';
+  })
+  .then(
+    Promise.resolve().then((second) => {
+      console.log('second: ', second);
+      return 'c';
+    })
+  )
+  .then((third) => console.log('third:', third));
+
+console.log('d');
+
+// d
+// undefined
+// undefined
+// b
+// a
+```
 
 ### Eventloop
 

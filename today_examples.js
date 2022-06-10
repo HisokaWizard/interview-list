@@ -16,17 +16,10 @@
 // console.log(0 === []); // false
 
 console.log(Boolean(null));
-console.log(Boolean('Hello'));
 console.log(Boolean({}));
-console.log(Boolean(NaN));
-console.log('' + 1 + 0 + 7);
 console.log('' - 1 - 0 + 7);
-console.log(null * 11);
 console.log(undefined + 11);
-console.log([3, 4] + 5);
 console.log({ s: 3, d: 4 } + 5);
-console.log('2' == 2);
-console.log('2' === 2);
 console.log(0 == []);
 console.log(0 === []);
 
@@ -85,4 +78,26 @@ console.log('6');
 // 2
 // 5
 
-////////////////////////////////////////
+console.log('///////////////////////');
+setTimeout(() => console.log('a'));
+
+Promise.resolve()
+  .then((first) => {
+    console.log('first:', first);
+    return 'b';
+  })
+  .then(
+    Promise.resolve().then((second) => {
+      console.log('second: ', second);
+      return 'c';
+    })
+  )
+  .then((third) => console.log('third:', third));
+
+console.log('d');
+
+// d
+// undefined
+// undefined
+// b
+// a
