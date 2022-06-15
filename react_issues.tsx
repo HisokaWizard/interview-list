@@ -3,6 +3,12 @@
 // Logic Tile passive, to make it active need to push on the edit action and action stay cancel edit
 // in left panel we have three input number - 0-255 for change color in the canvas background real /// time
 
+// Реализовать компонент: Tile/Page с header, левой панелью и правой панелью
+// * Header - содержит заголовок и actions (элемент переключающий в левой панели inputs из readonly
+// в edit режим)
+// * Левая панель - 3 inputs для ввода значения от 0 до 255 для формирования цвета rgb
+// * Правая панель - canvas, который реагирует на изменение любого из input и меняющий цвет фона
+
 const useState = (value: any) => {
   return [value, (_value: any) => {}];
 };
