@@ -135,13 +135,14 @@ export const RightPanel = ({ color }: RightPanelProps) => {
   return <canvas ref={canvasRef} id='canvas' width={300} height={200} />;
 };
 
-// 5. Componet which render some data with correct and optimal rendering
-// Every prop has special handler before render
+// 5. Реализовать компонент вычисляющий различные геометрические формулы и выводящий результат
+// Данные приходят из Props и нужно вычислить следующие формулы
 // площадь круга / длина окружности / площадь трапеции
 // radius => радиус
 // a => основание
 // b => шапка
 // h => высота
+// Также нужно реализовать верхнеуровневый механизм изменения свойств Props любым способом
 
 interface Props {
   radius: number;

@@ -18,41 +18,23 @@
 console.log(Boolean(null));
 console.log(Boolean({}));
 console.log('' - 1 - 0 + 7);
-console.log(undefined + 11);
+console.log([3, 4] + 5);
 console.log({ s: 3, d: 4 } + 5);
 console.log(0 == []);
 console.log(0 === []);
 
-///////////////////////////////////////
-// let a = 42;
-// let b = a;
-// b += 100;
-// console.log('a', a); // 42
-// console.log('b', b); // 142
+//////////////////////////////
 
-// let c = [1, 2, 3, 4, 5];
-// let d = c;
-// d.push(6);
-// console.log('c', c); // [1, 2, 3, 4, 5, 6]
-// console.log('d', d); // [1, 2, 3, 4, 5, 6]
-// let e = [1, 2, 3, 4, 5, 6];
-// console.log(c === d); // true
-// console.log(e === c); // false
+Promise.reject('a')
+  .catch((p) => p + 'b')
+  .catch((p) => p + 'с')
+  .then((p) => p + 'd')
+  .then((p) => p + 'f')
+  .catch((p) => p + 'h')
+  .finally((p) => p + 'e')
+  .then((p) => console.log(p));
 
-let a = 42;
-let b = a;
-b += 100;
-console.log('a', a);
-console.log('b', b);
-
-let c = [1, 2, 3, 4, 5];
-let d = c;
-d.push(6);
-console.log('c', c);
-console.log('d', d);
-let e = [1, 2, 3, 4, 5, 6];
-console.log(c === d);
-console.log(e === c);
+//abdf
 
 //////////////////////////////
 
@@ -77,27 +59,3 @@ console.log('6');
 // 4
 // 2
 // 5
-
-console.log('///////////////////////');
-setTimeout(() => console.log('a'));
-
-Promise.resolve()
-  .then((first) => {
-    console.log('first:', first);
-    return 'b';
-  })
-  .then(
-    Promise.resolve().then((second) => {
-      console.log('second: ', second);
-      return 'c';
-    })
-  )
-  .then((third) => console.log('third:', third));
-
-console.log('d');
-
-// d
-// undefined
-// undefined
-// b
-// a

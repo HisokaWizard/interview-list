@@ -85,11 +85,11 @@ type NewType2 = Pick<DifferentField, 'flag' | 'value'>;
 const Component = () => {
   const [v, setV] = useState(0);
 
-  const mathOperations = v * 2 + 1000 / v;
+  const mathOperations = useMemo(v * 2 + 1000 / v);
 
-  const increaseV = () => {
+  const increaseV = useCallback(() => {
     setV(v++);
-  };
+  });
 
   return (
     <div>
