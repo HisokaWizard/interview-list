@@ -1,36 +1,22 @@
-const correctBracketSequense = (strOfBrackets) => {
-  const stack = [];
+const removeElement = function (nums, val) {
+  if (!nums || nums.length === 0) return 0;
+  let finalItemCount = nums.length;
 
-  const checkStack = (item) => {
-    const last = stack.length - 1;
-    if (item === '(' || item === '{' || item === '[') {
-      stack.push(item);
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === val) {
+      nums.splice(i, 1);
+      finalItemCount--;
+      i--;
     }
-    if (item === ')') {
-      if (stack[last] === '(') {
-        stack.pop();
-      } else return;
-    }
-    if (item === ']') {
-      if (stack[last] === '[') {
-        stack.pop();
-      } else return;
-    }
-    if (item === '}') {
-      if (stack[last] === '{') {
-        stack.pop();
-      } else return;
-    }
-  };
-
-  for (let i = 0; i < strOfBrackets.length; i++) {
-    const item = strOfBrackets.charAt(i);
-    checkStack(item);
   }
-  if (stack.length === 0) return 'Sequense correct';
-  return 'Sequense incorrect';
+
+  console.log(nums);
+  return finalItemCount;
 };
 
-console.log(correctBracketSequense('([]{}{()})'));
-console.log(correctBracketSequense('(({{}()[][(}))'));
-console.log(correctBracketSequense('{()()()[][[[[[]]]]]{{}}()}'));
+console.log(
+  removeElement(
+    [4, 5, 6, 7, 4, 4, 4, 4, 4, 4, 4, 0, 3, 1, -4, -2, -7777, 33, 34, 5, 4, 55, 66, 5, 6, 7],
+    4,
+  ),
+);
