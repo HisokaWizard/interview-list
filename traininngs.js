@@ -1,22 +1,21 @@
-const removeElement = function (nums, val) {
-  if (!nums || nums.length === 0) return 0;
-  let finalItemCount = nums.length;
+let numbers = [];
 
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] === val) {
-      nums.splice(i, 1);
-      finalItemCount--;
-      i--;
+numbers = new Proxy(numbers, {
+  // (*)
+  set(target, prop, val) {
+    // для перехвата записи свойства
+    if (typeof val == 'number') {
+      target[prop] = val;
+      return true;
+    } else {
+      return false;
     }
-  }
+  },
+});
 
-  console.log(nums);
-  return finalItemCount;
-};
+numbers.push(1); // добавилось успешно
+numbers.push(2); // добавилось успешно
+numbers.push(5); // добавилось успешно
+console.log('Длина: ' + numbers.length); // 3
 
-console.log(
-  removeElement(
-    [4, 5, 6, 7, 4, 4, 4, 4, 4, 4, 4, 0, 3, 1, -4, -2, -7777, 33, 34, 5, 4, 55, 66, 5, 6, 7],
-    4,
-  ),
-);
+numbers.push('6'); // TypeError (ловушка set на прокси вернула false)
