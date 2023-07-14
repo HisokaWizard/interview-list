@@ -82,7 +82,7 @@ const LeftPanel = ({ onColorHandler }: LeftPanelProps) => {
       setRed(color);
       onColorHandler(template(color, green, blue));
     },
-    [green, blue]
+    [green, blue],
   );
 
   const onGreenChange = useCallback(
@@ -91,7 +91,7 @@ const LeftPanel = ({ onColorHandler }: LeftPanelProps) => {
       setGreen(color);
       onColorHandler(template(red, color, blue));
     },
-    [red, blue]
+    [red, blue],
   );
 
   const onBlueChange = useCallback(
@@ -100,7 +100,7 @@ const LeftPanel = ({ onColorHandler }: LeftPanelProps) => {
       setBlue(color);
       onColorHandler(template(red, green, color));
     },
-    [red, green]
+    [red, green],
   );
 
   return (
@@ -172,3 +172,89 @@ export const GeometricFormulas = memo(({ radius, a, b, h }: Props) => {
     </div>
   );
 });
+
+/**
+ * Huge code for optimization
+ * Hook which create rows content for table
+ * */
+import { useDidProductType, CurrentPortfolioDidDealDto, useGetDesks, Marker } from '@/any-place';
+
+export const useDealsTableRows = (
+  updateTable: () => void,
+  data: Partial<CurrentPortfolioDidDealDto>[] = [],
+) => {
+  const didProductTypes = useDidProductType();
+  const { desks } = useGetDesks();
+
+  return useMemo(() => {
+    return data?.map((row, index) => ({
+      bookingBalanceCodes: row?.bookingBalanceCodes?.join(', ') ?? '',
+      customerNumber: row?.customerNumber ?? '-',
+      dealObjectId: row?.dealObjectId ?? '-',
+      deskCode: {
+        render: () => {
+          const currentDesks = desks
+            .filter((it) => (row?.deskCode?.split(',') ?? []).includes(it.code))
+            ?.map((it) => it.name)
+            .join(',');
+          return currentDesks ? (
+            <Marker
+              size='sm'
+              label={currentDesks}
+              dataTestId={'DeskCodeField'}
+              isTextBage={false}
+            />
+          ) : (
+            '-'
+          );
+        },
+      },
+      didProductCodes: {
+        render: () =>
+          didProductTypes
+            .filter((it) => (row?.didProductCodes ?? []).includes(it.code))
+            ?.map((it) => it.name)
+            .join(',') ?? '',
+      },
+      directorName: row?.directorName ?? '-',
+      endDate:
+        typeof row?.endDate === 'string' ? row?.endDate.split('-').reverse().join('.') : undefined,
+      financialCalculationInExcel:
+        row?.financialCalculationInExcel === undefined
+          ? ''
+          : row?.financialCalculationInExcel === true
+          ? 'Да'
+          : 'Нет',
+      initialDrawDate:
+        typeof row?.initialDrawDate === 'string'
+          ? row?.initialDrawDate.split('-').reverse().join('.')
+          : undefined,
+      stateCode: {
+        render: () =>
+          row?.stateCode ? (
+            <Marker
+              size='sm'
+              label={row?.stateCode}
+              dataTestId={'StateCodeField'}
+              isTextBage={false}
+            />
+          ) : (
+            '-'
+          ),
+      },
+      stateFinanceCode: {
+        render: () =>
+          row?.stateFinanceCode ? (
+            <Marker
+              size='sm'
+              label={row?.stateFinanceCode}
+              dataTestId={'StateFinanceCodeField'}
+              isTextBage={false}
+            />
+          ) : (
+            '-'
+          ),
+      },
+    }));
+  }, [data]);
+};

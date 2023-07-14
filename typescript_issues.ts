@@ -50,3 +50,42 @@ export const currencyConverter = async (value: number, currentCur: ISO, necessar
     return error as Error;
   }
 };
+
+/**
+ * Создать сущность Machine с несколькими полями(масса, мощность(power), цвет, топливо(fuel))
+ * Топливо должно быть типом состоящим из 3 вариантов(дизель(diesel), бензин(petrol), газ(gas)
+ *
+ * Создать сущность Car наследник сущности Machine и добавить новые поля (марка, скорость, кондиционер(airConditioner)
+ *
+ * Создать сущность Bus наследник сущности Car и удалить из типа поля марка и кондиционер,
+ * также добавить новое поле вместимость(capacity)
+ *
+ * Создать сущность ElectroBus наследник сущности Car иным способом от предыдущего наследования +
+ * добавить поле specialNumber
+ *
+ * Создать сущность ElectroBusListType - представляющую собой мапу(ключ-значение), где ключ - произвольная строка, а значение - сущность
+ * ElectroBus из которой удалены capacity, specialNumber, color
+ * */
+
+type Fuel = 'diesel' | 'petrol' | 'gas';
+
+interface Machine {
+  mass: number;
+  power: number;
+  color: string;
+  fuel: Fuel;
+}
+
+interface Car extends Machine {
+  mark: string;
+  speed: number;
+  airConditioner: boolean;
+}
+
+interface Bus extends Omit<Car, 'mark' | 'airConditioner'> {
+  capacity: number;
+}
+
+type ElectroBus = Bus & { specialNumber: number };
+
+type ElectroBusListType = Record<string, Pick<ElectroBus, 'capacity' | 'specialNumber' | 'color'>>;
